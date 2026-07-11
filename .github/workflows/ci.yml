@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: windows11.json is in sync with generate.py
+        run: |
+          python3 generate.py /tmp/generated.json
+          diff /tmp/generated.json windows11.json
+      - name: Ruleset sanity checks
+        run: |
+          python3 - <<'EOF'
+          import json
+          doc = json.load(open("windows11.json"))
+          assert doc["title"], "missing title"
+          assert doc["rules"], "no rules"
+          for r in doc["rules"]:
+              assert r["description"], "rule missing description"
+              assert r["manipulators"], f"no manipulators in {r['description']!r}"
+              for m in r["manipulators"]:
+                  assert m["type"] == "basic"
+                  assert "from" in m and ("to" in m or "to_if_alone" in m)
+          print(f"{len(doc['rules'])} rules, "
+                f"{sum(len(r['manipulators']) for r in doc['rules'])} manipulators: OK")
+          EOF
