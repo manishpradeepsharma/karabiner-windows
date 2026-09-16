@@ -64,21 +64,7 @@ def menu_click(clause):
             "(first application process whose frontmost is true) to click " + clause + "'"}
 
 # ---------- Window management ----------
-rules.append(rule("Win+Arrows: snap window (Left/Right halves, Up maximize/fill, Down minimize)", [
-    m(frm("left_arrow", ["command"]), menu_click('menu item "Left" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("right_arrow", ["command"]), menu_click('menu item "Right" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("up_arrow", ["command"]), menu_click('menu item "Fill" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("down_arrow", ["command"]), key("m", ["left_command"]), COND_GUI),
-]))
-rules.append(rule("Win+Shift+Down: restore window to its previous (pre-snap) size", [
-    m(frm("down_arrow", ["command", "shift"]), menu_click('menu item "Return to Previous Size" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-]))
-rules.append(rule("Win+Alt+Arrows: snap to quarters (Left/Right = top corners, Shift for bottom corners)", [
-    m(frm("left_arrow", ["command", "option"]), menu_click('menu item "Top Left" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("right_arrow", ["command", "option"]), menu_click('menu item "Top Right" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("left_arrow", ["command", "option", "shift"]), menu_click('menu item "Bottom Left" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-    m(frm("right_arrow", ["command", "option", "shift"]), menu_click('menu item "Bottom Right" of menu 1 of menu item "Move & Resize" of menu "Window" of menu bar 1'), COND_GUI),
-]))
+
 rules.append(rule("Alt+Space: open the Window menu (Windows window-control menu)", [
     m(frm("spacebar", ["option"]), menu_click('menu bar item "Window" of menu bar 1'), COND_GUI),
 ]))
@@ -171,12 +157,7 @@ rules.append(rule("Alt+F4: quit application", [
 rules.append(rule("Excel: F4 toggles absolute/relative references (Cmd+T)", [
     m(frm("f4"), key("t", ["left_command"]), COND_EXCEL),
 ]))
-rules.append(rule("Excel: Ctrl+Arrows to Cmd+Arrows (navigate cell ranges)", [
-    m(frm("left_arrow", ["control"]), key("left_arrow", ["left_command"]), COND_EXCEL),
-    m(frm("right_arrow", ["control"]), key("right_arrow", ["left_command"]), COND_EXCEL),
-    m(frm("up_arrow", ["control"]), key("up_arrow", ["left_command"]), COND_EXCEL),
-    m(frm("down_arrow", ["control"]), key("down_arrow", ["left_command"]), COND_EXCEL),
-]))
+
 
 # ---------- Screenshots ----------
 rules.append(rule("PrintScreen: Snipping Tool (screenshot toolbar); Alt+PrtScn: window to clipboard; Win+PrtScn: full screen to file", [
