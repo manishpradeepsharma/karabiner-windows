@@ -30,6 +30,8 @@ COND_TEXT = [unless(TERMINALS + VMS_REMOTE)]   # text-editing rules: skip termin
 COND_GUI = [unless(VMS_REMOTE)]                # system rules: skip VMs/remote only
 COND_FINDER = [{"type": "frontmost_application_if", "bundle_identifiers": ["^com\\.apple\\.finder$"]},
                unless(VMS_REMOTE)]
+COND_EXCEL = [{"type": "frontmost_application_if", "bundle_identifiers": ["^com\\.microsoft\\.Excel$"]}]
+COND_TEXT_NO_EXCEL = COND_TEXT + [unless(["^com\\.microsoft\\.Excel$"])]
 
 def frm(key, mand=None, opt=None):
     f = {"key_code": key}
@@ -95,13 +97,7 @@ rules.append(rule("Ctrl+Win+Left/Right: switch virtual desktops (Spaces)", [
     m(frm("right_arrow", ["command", "control"]), key("right_arrow", ["left_control"]), COND_GUI),
 ]))
 rules.append(rule("Win+D: show desktop", [
-    m(frm("d", ["command"]), {"apple_vendor_keyboard_key_code": "expose_desktop"}, COND_GUI),
-]))
-rules.append(rule("Win+Tab: Task View (Mission Control) — replaces Cmd+Tab; use Alt+Tab to switch apps", [
-    m(frm("tab", ["command"]), {"apple_vendor_keyboard_key_code": "expose_all"}, COND_GUI),
-]))
-rules.append(rule("Alt+Tab: switch apps (Alt+Shift+Tab for reverse)", [
-    m(frm("tab", ["option"], ["shift"]), key("tab", ["left_command"]), COND_GUI),
+    m(frm("d", ["command"]), {"apple_vendor_keyboard_key_code": "expose_desktop"}, COND_GUI + [unless(["^com\\.apple\\.finder$"])]),
 ]))
 
 # ---------- Win-key system shortcuts ----------
@@ -167,7 +163,19 @@ rules.append(rule("Ctrl+Alt+Delete: Force Quit dialog", [
     m(frm("delete_forward", ["control", "option"]), key("escape", ["left_command", "left_option"]), COND_GUI),
 ]))
 rules.append(rule("Alt+F4: quit application", [
+    m(frm("f4", ["option"]), key("w", ["left_command"]), [{"type": "frontmost_application_if", "bundle_identifiers": ["^com\\.apple\\.finder$"]}]),
     m(frm("f4", ["option"]), key("q", ["left_command"]), COND_GUI),
+]))
+
+# ---------- Excel ----------
+rules.append(rule("Excel: F4 toggles absolute/relative references (Cmd+T)", [
+    m(frm("f4"), key("t", ["left_command"]), COND_EXCEL),
+]))
+rules.append(rule("Excel: Ctrl+Arrows to Cmd+Arrows (navigate cell ranges)", [
+    m(frm("left_arrow", ["control"]), key("left_arrow", ["left_command"]), COND_EXCEL),
+    m(frm("right_arrow", ["control"]), key("right_arrow", ["left_command"]), COND_EXCEL),
+    m(frm("up_arrow", ["control"]), key("up_arrow", ["left_command"]), COND_EXCEL),
+    m(frm("down_arrow", ["control"]), key("down_arrow", ["left_command"]), COND_EXCEL),
 ]))
 
 # ---------- Screenshots ----------
@@ -211,8 +219,8 @@ rules.append(rule("PageUp/PageDown: move the cursor a page (Windows style; Shift
     m(frm("page_down"), key("page_down", ["left_option"]), COND_TEXT),
 ]))
 rules.append(rule("F3 / Shift+F3: find next / previous", [
-    m(frm("f3", ["shift"]), key("g", ["left_command", "left_shift"]), COND_TEXT),
-    m(frm("f3"), key("g", ["left_command"]), COND_TEXT),
+    m(frm("f3", ["shift"]), key("g", ["left_command", "left_shift"]), COND_TEXT_NO_EXCEL),
+    m(frm("f3"), key("g", ["left_command"]), COND_TEXT_NO_EXCEL),
 ]))
 
 # ---------- Browser ----------
@@ -220,8 +228,8 @@ rules.append(rule("Browser: F5 / Ctrl+F5 refresh, F11 full screen, Alt+Left/Righ
     m(frm("f5", ["control"]), key("r", ["left_command", "left_shift"]), COND_TEXT),
     m(frm("f5"), key("r", ["left_command"]), COND_TEXT),
     m(frm("f11"), key("f", ["left_control", "left_command"]), COND_TEXT),
-    m(frm("left_arrow", ["option"]), key("open_bracket", ["left_command"]), COND_TEXT),
-    m(frm("right_arrow", ["option"]), key("close_bracket", ["left_command"]), COND_TEXT),
+    m(frm("left_arrow", ["option"]), key("open_bracket", ["left_command"]), COND_TEXT_NO_EXCEL),
+    m(frm("right_arrow", ["option"]), key("close_bracket", ["left_command"]), COND_TEXT_NO_EXCEL),
     m(frm("equal_sign", ["control"], ["shift"]), key("equal_sign", ["left_command"]), COND_TEXT),
     m(frm("hyphen", ["control"]), key("hyphen", ["left_command"]), COND_TEXT),
     m(frm("0", ["control"]), key("0", ["left_command"]), COND_TEXT),
