@@ -234,6 +234,9 @@ rules.append(rule("Explorer→Finder: Enter opens the selected item (rename with
 rules.append(rule("Ctrl+Alt+T: open Terminal", [
     m(frm("t", ["control", "option"]), {"shell_command": "open -a Terminal"}, COND_GUI),
 ]))
+rules.append(rule("Ctrl+Alt+B: open Bin (Trash)", [
+    m(frm("b", ["control", "option"]), {"shell_command": "open ~/.Trash"}, COND_GUI),
+]))
 
 doc = {"title": "Windows 11 Shortcuts for macOS", "rules": rules}
 out = sys.argv[1]
