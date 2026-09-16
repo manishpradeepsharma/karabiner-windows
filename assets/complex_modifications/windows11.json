@@ -1007,6 +1007,43 @@
       ]
     },
     {
+      "description": "Excel: Ctrl+Shift+L toggles filters (Cmd+Shift+F)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": {
+              "mandatory": [
+                "control",
+                "shift"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "f",
+              "modifiers": [
+                "left_command",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.Excel$"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "description": "PrintScreen: Snipping Tool (screenshot toolbar); Alt+PrtScn: window to clipboard; Win+PrtScn: full screen to file",
       "manipulators": [
         {

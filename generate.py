@@ -157,6 +157,9 @@ rules.append(rule("Alt+F4: quit application", [
 rules.append(rule("Excel: F4 toggles absolute/relative references (Cmd+T)", [
     m(frm("f4"), key("t", ["left_command"]), COND_EXCEL),
 ]))
+rules.append(rule("Excel: Ctrl+Shift+L toggles filters (Cmd+Shift+F)", [
+    m(frm("l", ["control", "shift"]), key("f", ["left_command", "left_shift"]), COND_EXCEL),
+]))
 
 
 # ---------- Screenshots ----------
